@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+
+type FormElement = React.FormEvent<HTMLFormElement>
+interface ITask {
+	name: string;
+	done: boolean
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const [newTask, setNewTask] = useState<string>('')
+	const [tasks, setTasks] = useState<ITask[]>([])
+
+	const handleSubmit = (e: FormElement) => {
+		e.preventDefault()
+		addTask(newTask)
+		setNewTask('')
+	}
+
+	const addTask = (name: string) =>{
+		const newTask = [...tasks, { name, done: false }]
+		setTasks(newTask)
+	}
+
+	return (
+		<>
+			<form onSubmit={handleSubmit}>
+				<input type="text" onChange={e => setNewTask(e.target.value)} value={newTask} />
+				<button>
+					Save
+				</button>
+			</form>
+		</>
+	);
 }
 
 export default App;
